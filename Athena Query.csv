@@ -1,0 +1,118 @@
+Execution ID,Query,Start time,Status,Run time,Data scanned,Query engine version used,Encryption
+e5b9974f-ebde-4ceb-a077-1da823fa42c8,SELECT * FROM bitcoin_project.bitcoin_cleaned_data_parquet LIMIT 10,2025-03-15T22:37:50.690-05:00,FAILED,327 ms,0 MB,Athena engine version 3,
+afd7da4f-b674-4ed2-a660-e4df4072fa43,"CREATE TABLE bitcoin_project.bitcoin_cleaned_data_csv
+WITH (
+    external_location = 's3://raw-data-bitcoin/bitcoin_cleaned_data/',
+    format = 'PARQUET'
+) AS
+SELECT *
+FROM bitcoin_project.bitcoin_cleaned_data",2025-03-15T22:36:43.694-05:00,SUCCEEDED,7.701 sec,61.71 MB,Athena engine version 3,
+7cf973e6-b339-444b-a0eb-15bf5be05809,"CREATE TABLE bitcoin_project.bitcoin_cleaned_data_csv
+WITH (
+    external_location = 's3://raw-data-bitcoin/bitcoin_cleaned_data/',
+    format = 'CSV'
+) AS
+SELECT *
+FROM bitcoin_project.bitcoin_cleaned_data",2025-03-15T22:34:34.886-05:00,FAILED,443 ms,0 MB,Athena engine version 3,
+07b457a6-7b6b-46cd-bdb4-bab471874480,"SELECT 
+    COUNT(*) AS total_rows,
+    COUNT(CASE WHEN Open IS NULL THEN 1 END) AS null_open,
+    COUNT(CASE WHEN High IS NULL THEN 1 END) AS null_high,
+    COUNT(CASE WHEN Low IS NULL THEN 1 END) AS null_low,
+    COUNT(CASE WHEN Close IS NULL THEN 1 END) AS null_close,
+    COUNT(CASE WHEN Volume IS NULL THEN 1 END) AS null_volume
+FROM bitcoin_project.bitcoin_data",2025-03-15T22:31:43.333-05:00,SUCCEEDED,1.883 sec,61.71 MB,Athena engine version 3,
+c4128f94-4d25-4295-9853-692adfd364c1,"CREATE OR REPLACE VIEW bitcoin_project.bitcoin_cleaned_data AS
+SELECT *
+FROM bitcoin_project.bitcoin_data
+WHERE Open IS NOT NULL
+  AND High IS NOT NULL
+  AND Low IS NOT NULL
+  AND Close IS NOT NULL
+  AND Volume IS NOT NULL",2025-03-15T22:29:52.395-05:00,SUCCEEDED,522 ms,0 MB,Athena engine version 3,
+a010b8cd-6682-4c94-9ee2-347014d69bfd,SHOW TABLES IN bitcoin_project,2025-03-15T22:29:32.866-05:00,SUCCEEDED,187 ms,0 MB,Athena engine version 3,
+a3fb9ef9-9112-4538-8489-fe7011a0ddeb,SELECT * FROM bitcoin_project.bitcoin_raw_data LIMIT 10,2025-03-15T22:28:59.029-05:00,FAILED,329 ms,0 MB,Athena engine version 3,
+822c945f-624e-46df-8c86-f5e20f1259ab,"SELECT * FROM ""bitcoin_project"".""bitcoin_cleaned_data"" limit 10",2025-03-15T22:28:42.682-05:00,FAILED,441 ms,0 MB,Athena engine version 3,
+833176f2-68c1-4c64-9ef1-0c33542802a0,"INSERT INTO bitcoin_project.bitcoin_cleaned_data
+SELECT 
+    Date,
+    Open,
+    High,
+    Low,
+    Close,
+    Volume
+FROM bitcoin_project.bitcoin_raw_data
+WHERE Open IS NOT NULL 
+  AND High IS NOT NULL
+  AND Low IS NOT NULL
+  AND Close IS NOT NULL
+  AND Volume IS NOT NULL",2025-03-15T22:27:45.064-05:00,FAILED,0 sec,0 MB,Athena engine version 3,
+32bd427c-4dd7-4697-9ca2-6d454e15842c,DROP TABLE IF EXISTS bitcoin_project.bitcoin_cleaned_data,2025-03-15T22:27:30.667-05:00,SUCCEEDED,562 ms,0 MB,Athena engine version 3,
+2b4785db-100c-4a4d-bd08-d5309a04a359,"CREATE TABLE bitcoin_project.bitcoin_cleaned_data
+WITH (
+    external_location = 's3://raw-data-bitcoin/bitcoin_cleaned_data/',
+    format = 'CSV'
+) AS
+SELECT 
+    Date,
+    Open,
+    High,
+    Low,
+    Close,
+    Volume
+FROM bitcoin_project.bitcoin_cleaned_data
+WHERE Open IS NOT NULL 
+  AND High IS NOT NULL
+  AND Low IS NOT NULL
+  AND Close IS NOT NULL
+  AND Volume IS NOT NULL",2025-03-15T22:26:51.618-05:00,FAILED,196 ms,0 MB,Athena engine version 3,
+13e79110-20a0-49a2-bb01-6de31d5cec43,"CREATE TABLE bitcoin_project.cleaned_data_results
+WITH (
+  external_location = 's3://raw-data-bitcoin/bitcoin_cleaned_data/',
+  format = 'CSV'
+) AS
+SELECT * FROM bitcoin_project.bitcoin_cleaned_data",2025-03-15T22:25:08.706-05:00,FAILED,451 ms,0 MB,Athena engine version 3,
+172daad8-72b6-4155-a346-db3e6e666fa8,"SELECT 
+    CAST(Date AS date) AS date,
+    AVG(Close) AS avg_close
+FROM bitcoin_project.bitcoin_cleaned_data
+GROUP BY CAST(Date AS date)
+ORDER BY date",2025-03-15T22:23:08.493-05:00,SUCCEEDED,3.116 sec,61.69 MB,Athena engine version 3,
+f797dad6-807a-4863-bec5-d6183f17b904,"SELECT 
+    MIN(Open) AS min_open,
+    MAX(Open) AS max_open,
+    AVG(Open) AS avg_open
+FROM bitcoin_project.bitcoin_cleaned_data",2025-03-15T22:22:40.609-05:00,SUCCEEDED,1.657 sec,61.69 MB,Athena engine version 3,
+189dc5fa-cdd2-447d-bad4-cdb2ef2de756,"SELECT * FROM ""bitcoin_project"".""bitcoin_cleaned_data"" limit 10",2025-03-15T22:20:40.486-05:00,SUCCEEDED,1.013 sec,1.49 MB,Athena engine version 3,
+5534cc06-432d-48a1-ad5f-01e348ab608f,"CREATE OR REPLACE VIEW bitcoin_project.bitcoin_cleaned_data AS
+SELECT *
+FROM bitcoin_project.bitcoin_data
+WHERE Open IS NOT NULL
+  AND High IS NOT NULL
+  AND Low IS NOT NULL
+  AND Close IS NOT NULL
+  AND Volume IS NOT NULL",2025-03-15T22:20:17.287-05:00,SUCCEEDED,546 ms,0 MB,Athena engine version 3,
+1e96bb09-5d84-48c9-b7a5-126bce63e9ad,SHOW TABLES IN bitcoin_project,2025-03-15T22:19:00.979-05:00,SUCCEEDED,223 ms,0 MB,Athena engine version 3,
+66a7772c-e597-4e26-a70c-11dde166ba3c,"CREATE TABLE bitcoin_project.bitcoin_cleaned_data
+WITH (
+    external_location = 's3://raw-data-bitcoin/cleaned_data/',
+    format = 'CSV'
+) AS
+SELECT *
+FROM bitcoin_project.bitcoin_raw_data
+WHERE Open IS NOT NULL
+  AND High IS NOT NULL
+  AND Low IS NOT NULL
+  AND Close IS NOT NULL
+  AND Volume IS NOT NULL",2025-03-15T22:12:06.080-05:00,FAILED,466 ms,0 MB,Athena engine version 3,
+75bbb7b8-e3e8-4525-9a30-cf1ca969f38e,SELECT AVG(Close) FROM bitcoin_project.bitcoin_data,2025-03-15T22:00:42.759-05:00,SUCCEEDED,1.372 sec,61.69 MB,Athena engine version 3,
+07e90685-58e3-4ee9-a15e-05a28d6efa8d,SELECT * FROM bitcoin_project.bitcoin_data LIMIT 10,2025-03-15T21:57:20.832-05:00,SUCCEEDED,843 ms,2.40 MB,Athena engine version 3,
+10cfdb06-cc46-43fd-b76d-b376dd1a061a,SELECT * FROM bitcoin_project.bitcoin_raw_data LIMIT 10,2025-03-15T21:55:09.855-05:00,FAILED,435 ms,0 MB,Athena engine version 3,
+194614c0-ecad-43d0-9c50-46bba10209f1,"CREATE EXTERNAL TABLE IF NOT EXISTS `bitcoin_project`.`bitcoin_data` ( `Date` timestamp, `Open` double, `High` double, `Low` double, `Close` double, `Volume` double
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES ('field.delim' = ',')
+STORED AS INPUTFORMAT 'org.apache.hadoop.mapred.TextInputFormat' OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION 's3://raw-data-bitcoin/'
+TBLPROPERTIES ('classification' = 'csv')",2025-03-15T21:54:28.309-05:00,SUCCEEDED,431 ms,0 MB,Athena engine version 3,
+bc4d93cb-2a5b-43af-b159-30003ae0d1cb,CREATE DATABASE `bitcoin_project`,2025-03-15T21:54:27.389-05:00,SUCCEEDED,403 ms,0 MB,Athena engine version 3,
